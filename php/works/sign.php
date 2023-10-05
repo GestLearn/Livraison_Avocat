@@ -36,7 +36,8 @@
             <button id="clear">Clear Signature</button>
             <textarea id="signature64" name="signed" style="display: none"></textarea>
         </div>
-  
+        <input type="hidden" name="record_id" value="<?php echo $_GET['id']; ?>">
+
         <br/>
         <button class="btn btn-success">Submit</button>
     </form>

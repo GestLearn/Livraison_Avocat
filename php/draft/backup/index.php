@@ -32,10 +32,10 @@
     
     <?php
   
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $dbname = "new-liv-v1";
+        $servername = 'db5014599449.hosting-data.io';
+        $dbname = 'dbs12132142';
+        $username = 'dbu5396336';
+        $password = 'Sundus@Pel$67000.';
 
         $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -66,8 +66,7 @@
                 <th> Phone <input type="text" placeholder="Filter by Phone" class="form-control form-control-sm"></th>
                 <th> ID Number <input type="text" placeholder="Filter by ID Number" class="form-control form-control-sm"></th>
                 <th> Letter Type <input type="text" placeholder="Filter by Letter Type" class="form-control form-control-sm"></th>
-                <th>Sign</th>
-                <th>Download</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -91,13 +90,6 @@
             <td><?php echo $row["destPhone"]; ?></td>
             <td><?php echo $row["destIdNumber"]; ?></td>
             <td><?php echo $row["letterType"]; ?></td>
-            <?php if (!empty($row["signature"])) { ?>
-                <td><?php echo $row["signature"]; ?></td>
-            <?php } else { ?>
-                <td>
-				    <a href='./sign.php?id=<?php echo $row["id"]; ?>'>sign</a>
-                </td>
-          	<?php } ?>
             <td>
                 <button class="download-btn">Download PDF</button>
             </td>
@@ -123,40 +115,83 @@
 
 <script src="./html2pdf.bundle.min.js"></script>
     <script type="text/javascript">
-    
+    $(document).ready(function () {
+        var table = $('#table').DataTable({
+            initComplete: function () {
+                this.api().columns().every(function () {
+                    var column = this;
+                    $('input', this.header()).on('keyup change', function () {
+                        if (column.search() !== this.value) {
+                            column.search(this.value).draw();
+                        }
+                    });
+                });
+            }
+        });
+
+        // Add a click event listener to the "Download" button in each row
+        $('#table tbody').on('click', '.download-btn', function () {
+            var rowData = table.row($(this).parents('tr')).data(); // Get the data of the clicked row
+            generatePdfForRow(rowData); // Generate a PDF for the clicked row data
+        });
+
+        function generatePdfForRow(rowData) {
+            var tableHeaders = table.columns().header().toArray(); // Get an array of table headers
+
+            // Create a new plain text element for the PDF
+            var textElement = document.createElement('pre');
+
+            // Combine table headers and table data before creating the PDF content
+            var rowContent = "";
+            for (var i = 0; i < rowData.length - 1; i++) {
+                rowContent += tableHeaders[i].textContent + ': ' + rowData[i] + '\n';
+            }
+
+            textElement.textContent = rowContent;
+
+            var opt = {
+                margin: 1,
+                filename: 'row_data.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+            // Generate PDF from the plain text element
+            html2pdf().from(textElement).set(opt).save();
+        }
+    });
 </script>
-<script src="./js/pdfGenerate.js"></script>
-<script src="./js/pdfexportAll.js"></script>
 <script type="text/javascript">
-    // document.getElementById('exportPdf').onclick = function () {
-    //     var table = document.querySelector('table'); // Select your table
-    //     var tableContent = '';
+    document.getElementById('exportPdf').onclick = function () {
+        var table = document.querySelector('table'); // Select your table
+        var tableContent = '';
 
-    //     // Loop through table rows and cells to extract content
-    //     table.querySelectorAll('tr').forEach(function (row) {
-    //         var cells = row.querySelectorAll('td, th');
-    //         for (var i = 0; i < cells.length - 1; i++) { // Skip the last cell (td or th)
-    //             tableContent += cells[i].textContent + '\n'; // Separate cells with newlines
-    //         }
-    //         tableContent += '\n'; // Separate rows with a blank line
-    //     });
+        // Loop through table rows and cells to extract content
+        table.querySelectorAll('tr').forEach(function (row) {
+            var cells = row.querySelectorAll('td, th');
+            for (var i = 0; i < cells.length - 1; i++) { // Skip the last cell (td or th)
+                tableContent += cells[i].textContent + '\n'; // Separate cells with newlines
+            }
+            tableContent += '\n'; // Separate rows with a blank line
+        });
 
-    //     // Create a new plain text element for the PDF
-    //     var textElement = document.createElement('pre');
-    //     textElement.textContent = tableContent;
+        // Create a new plain text element for the PDF
+        var textElement = document.createElement('pre');
+        textElement.textContent = tableContent;
 
-    //     var timestamp = new Date().toISOString().replace(/[-:.]/g, '_'); // Format timestamp
-    //     var opt = {
-    //         margin: 1,
-    //         filename: 'myfile_' + timestamp + '.pdf',
-    //         image: { type: 'jpeg', quality: 0.98 },
-    //         html2canvas: { scale: 2 },
-    //         jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-    //     };
+        var timestamp = new Date().toISOString().replace(/[-:.]/g, '_'); // Format timestamp
+        var opt = {
+            margin: 1,
+            filename: 'myfile_' + timestamp + '.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
 
-    //     // Generate PDF from the plain text element
-    //     html2pdf().from(textElement).set(opt).save();
-    // }
+        // Generate PDF from the plain text element
+        html2pdf().from(textElement).set(opt).save();
+    }
 </script>
 
 
