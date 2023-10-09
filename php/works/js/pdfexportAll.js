@@ -7,7 +7,7 @@ document.getElementById('exportPdf').onclick = function () {
     // Loop through table rows and cells to extract content
     table.querySelectorAll('tr').forEach(function (row) {
         var cells = row.querySelectorAll('td, th');
-        for (var i = 0; i < cells.length - 2; i++) { // Skip the last cell (td or th)
+        for (var i = 0; i < cells.length - 3; i++) { // Skip the last cell (td or th)
             tableContent += cells[i].textContent + '<br>'; // Separate cells with line breaks
         }
 
@@ -20,7 +20,7 @@ document.getElementById('exportPdf').onclick = function () {
         if (signatureFileName && signatureFileName !== "" && validImageExtensions.includes(fileExtension)) {
             // Create an image element for the signature
             var signatureImage = document.createElement('img');
-            var imagePath = './upload/' + signatureFileName;
+            var imagePath = './uploads/' + signatureFileName;
             signatureImage.src = imagePath; // Update the path accordingly
             signatureImage.style.maxWidth = '100px'; // Set the maximum width for the signature image
 

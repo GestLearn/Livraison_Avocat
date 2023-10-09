@@ -42,9 +42,9 @@ $(document).ready(function () {
         if (signatureFileName && signatureFileName !== "" && validImageExtensions.includes(fileExtension)) {
             // Create an image element for the signature
             var signatureImage = document.createElement('img');
-            var imagePath = './upload/' + signatureFileName;
+            var imagePath = './uploads/' + signatureFileName;
             signatureImage.src = imagePath; // Update the path accordingly
-            signatureImage.style.maxWidth = '100px'; // Set the maximum width for the signature image
+            signatureImage.style.maxWidth = '300px'; // Set the maximum width for the signature image
 
             // Add the signature image to the footer div and align it to the right
             signatureImage.style.float = 'right';
@@ -53,7 +53,7 @@ $(document).ready(function () {
 
         // Combine table headers and table data before creating the PDF content
         var rowContent = "";
-        for (var i = 0; i < rowData.length - 2; i++) {
+        for (var i = 0; i < rowData.length - 3; i++) {
             rowContent += tableHeaders[i].textContent + ': ' + rowData[i] + '\n';
             
             // Add space between content elements
