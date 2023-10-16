@@ -67,8 +67,8 @@ $(document).ready(function () {
         pdfContent.appendChild(footerDiv);
 
         // Set explicit dimensions for the pdfContent element (letter-sized page in portrait orientation)
-        pdfContent.style.width = '8.5in';
-        pdfContent.style.height = '7in';
+        // pdfContent.style.width = '8.5in';
+        // pdfContent.style.height = '7in';
 
         var opt = {
             margin: 1,

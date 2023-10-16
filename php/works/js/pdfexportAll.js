@@ -7,7 +7,7 @@ document.getElementById('exportPdf').onclick = function () {
     // Loop through table rows and cells to extract content
     table.querySelectorAll('tr').forEach(function (row) {
         var cells = row.querySelectorAll('td, th');
-        for (var i = 0; i < cells.length - 3; i++) { // Skip the last cell (td or th)
+        for (var i = 0; i < cells.length - 2; i++) { // Skip the last cell (td or th)
             tableContent += cells[i].textContent + '<br>'; // Separate cells with line breaks
         }
 

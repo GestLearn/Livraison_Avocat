@@ -121,10 +121,10 @@
 
   <script src="./html2pdf.bundle.min.js"></script>
 
-<script src="./html2pdf.bundle.min.js"></script>
-    <script type="text/javascript">
+<!-- <script src="./html2pdf.bundle.min.js"></script> -->
+    <!-- <script type="text/javascript">
     
-</script>
+</script> -->
 <script src="./js/pdfGenerate.js"></script>
 <script src="./js/pdfexportAll.js"></script>
 <script type="text/javascript">
