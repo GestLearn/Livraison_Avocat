@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $conn->close();
 
         // Redirect to the login page after successful registration
-        header("Location: login.php");
+        header("Location: home.php");
         exit;
     } else {
         // Handle registration failure

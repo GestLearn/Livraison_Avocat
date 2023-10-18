@@ -67,34 +67,32 @@
                 <option value="deliverer">Deliverer</option>
             </select>
             <label>Select Cities:</label>
-            <select name="cities[]" multiple>
-                <?php
-                $servername = "localhost";
-                $username = "root";
-                $password = "";
-                $dbname = "new-liv-v1";
+            <?php
+            $servername = "localhost";
+            $dbusername = "root";
+            $dbpassword = "";
+            $dbname = "new-liv-v1";
 
-                // Create a database connection
-                $conn = new mysqli($servername, $username, $password, $dbname);
+            // Create a database connection
+            $conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
 
-                if ($conn->connect_error) {
-                    die("Connection failed: " . $conn->connect_error);
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            }
+
+            // Fetch cities from the City table
+            $sql = "SELECT id, name FROM City";
+            $result = $conn->query($sql);
+
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    echo '<input type="checkbox" name="cities[]" value="' . $row["id"] . '">' . $row["name"] . '<br>';
                 }
+            }
 
-                // Fetch cities from the City table
-                $sql = "SELECT id, name FROM City";
-                $result = $conn->query($sql);
-
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        echo '<option value="' . $row["id"] . '">' . $row["name"] . '</option>';
-                    }
-                }
-
-                // Close the database connection
-                $conn->close();
-                ?>
-            </select>
+            // Close the database connection
+            $conn->close();
+            ?>
             <button type="submit">Sign Up</button>
         </form>
     </div>

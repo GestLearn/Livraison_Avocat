@@ -1,5 +1,11 @@
 <?php
-    session_start();
+session_start();
+
+// Check if the user session is not set, and if not, redirect to the login page
+if (!isset($_SESSION["user_id"])) {
+    header("Location: login.php");
+    exit; // Terminate the script to prevent further execution
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -100,7 +106,8 @@
             LEFT JOIN User AS u1 ON bi.id_deliverer = u1.id
             LEFT JOIN User AS u2 ON bi.id_manager = u2.id
             LEFT JOIN Dest AS d ON bi.id_dest = d.id";
-
+// var_dump($userRole);
+// die();
     if ($userRole === "admin") {
         // Admin can see all packages, no need for additional filtering
     } elseif ($userRole === "manager") {
@@ -108,7 +115,10 @@
         // die();
         // Manager should only see packages associated with their cities
         $sql .= " WHERE bi.id_city IN (" . implode(",", $associatedCityIds) . ")";
+        $sql .= " AND bi.id_manager = " . $userId;
     } elseif ($userRole === "deliverer") {
+        // var_dump($userRole);
+        // die();
         // Deliverer should only see packages they are assigned to
         $userId = $_SESSION["user_id"];
         $sql .= " WHERE bi.id_deliverer = $userId";
