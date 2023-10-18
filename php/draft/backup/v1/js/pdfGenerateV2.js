@@ -66,19 +66,6 @@ $(document).ready(function () {
             });
         }
     
-        var tableHeaders = table.columns().header().toArray();
-        const lastItem = rowData[rowData.length - 3]; // Get the last item
-        console.log("lastItem: ",lastItem,"-----includes", lastItem.includes('Set Status for the second passage'))
-        // Check the content of the last item and modify it accordingly
-        if (lastItem.includes('Set Status for the second passage')) {
-            // Set it as Absence Passage 1
-            rowData[rowData.length - 3] = 'Absence Passage 1';
-        } else if (lastItem.includes('Set Status for the third passage')) {
-            // Set it as Absence Passage 2
-            rowData[rowData.length - 3] = 'Absence Passage 2';
-        } else if(lastItem.includes('Set Status here')){
-            rowData[rowData.length - 3] = 'Not delivered';
-        }
         // Combine table headers and table data before creating the PDF content
         for (var i = 0; i < rowData.length - 2; i++) {
             const text = tableHeaders[i].textContent + ': ' + rowData[i];

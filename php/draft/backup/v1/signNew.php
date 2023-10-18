@@ -6,21 +6,9 @@
     <script src="jSignature-main/jquery.js"></script>
     <script src="jSignature-main/jSignature.min.js"></script>
     <script src="jSignature-main/modernizr.js"></script>
-
-    <style>
-      .jSignature {
-        margin: 0px;
-        padding: 0px;
-        border: medium;
-        height: 600px !important;
-        width: 100%;
-        touch-action: none;
-        background-color: rgb(255, 255, 255);
-      }
-    </style>
   </head>
   <body>
-    <div id="signature" style="border: 1px solid black;" class="parent"></div>
+    <div id="signature" style="border: 1px solid black;"></div>
 
     <button type="button" id="preview">Preview</button>
 

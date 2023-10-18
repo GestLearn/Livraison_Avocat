@@ -3,8 +3,8 @@ document.getElementById('exportPdf').onclick = async function () {
 
     // Create a new PDF document
     const pdfDoc = await PDFDocument.create();
-    let pageHeight = 650; // Initial page height
-    let currentPage = pdfDoc.addPage([650, pageHeight]); // Initialize the first page
+    let pageHeight = 600; // Initial page height
+    let currentPage = pdfDoc.addPage([600, pageHeight]); // Initialize the first page
     let y = currentPage.getHeight() - 50; // Initialize Y-coordinate for positioning text
 
     // Define font and font size for text
@@ -34,25 +34,8 @@ document.getElementById('exportPdf').onclick = async function () {
         let lineHeight = fontSize * 1.2; // Line height
         let cellHeight = lineHeight; // Height of the current cell's content
 
-        const lastCell = cells[cells.length - 3]; // Get the last cell
-        const lastItem = lastCell.textContent.trim(); // Get the text content of the last cell
-
-        console.log("lastItem: ", lastItem);
-
-        // Check the content of the last item and modify it accordingly
-        if (lastItem.includes('Set Status for the second passage')) {
-            // Set it as Absence Passage 1
-            lastCell.textContent = 'Absence Passage 1';
-        } else if (lastItem.includes('Set Status for the third passage')) {
-            // Set it as Absence Passage 2
-            lastCell.textContent = 'Absence Passage 2';
-        } else if (lastItem.includes('Set Status here')) {
-            console.log("----------------------------------------");
-            lastCell.textContent = 'Not delivered';
-        }
-
         for (var i = 0; i < cells.length - 2; i++) { // Skip the last cell (td or th)
-            const text = headerContentArray[i] + ' : ' + cells[i].textContent.replace(/\n/g, ''); // Remove newline characters
+            const text = headerContentArray[i] + ' : ' + cells[i].textContent.replace(/\n/g, ' '); // Remove newline characters
 
             // Calculate the required height for the current cell's content
             const textWidth = font.widthOfTextAtSize(text, fontSize);
@@ -63,7 +46,7 @@ document.getElementById('exportPdf').onclick = async function () {
             // Check if the cell content exceeds the current page height
             if (cellHeight > pageHeight) {
                 // Create a new page with the same size
-                currentPage = pdfDoc.addPage([650, pageHeight]);
+                currentPage = pdfDoc.addPage([600, pageHeight]);
                 y = currentPage.getHeight() - 50; // Reset Y-coordinate for the new page
             }
 
@@ -91,20 +74,20 @@ document.getElementById('exportPdf').onclick = async function () {
             // Load the signature image
             
             const res = await fetch('./uploads/' + signatureFileName);
-            // console.log("res await")
+            console.log("res await")
             const imageData = await res.arrayBuffer();
 
             // Embed the image as an XObject
             const image = await pdfDoc.embedPng(imageData);
 
             // Calculate image dimensions and position
-            const imageWidth = 100; // Adjust the width as needed
+            const imageWidth = 200; // Adjust the width as needed
             const imageHeight = (imageWidth / image.width) * image.height;
 
             // Check if the image exceeds the current page height
             if (y - imageHeight < 50) {
                 // Create a new page with the same size
-                currentPage = pdfDoc.addPage([650, pageHeight]);
+                currentPage = pdfDoc.addPage([600, pageHeight]);
                 y = currentPage.getHeight() - 50; // Reset Y-coordinate for the new page
             }
 
@@ -135,7 +118,7 @@ document.getElementById('exportPdf').onclick = async function () {
 
         // Create a new page every 2 rows
         if (rowCounter % 2 === 0) {
-            currentPage = pdfDoc.addPage([650, pageHeight]);
+            currentPage = pdfDoc.addPage([600, pageHeight]);
             y = currentPage.getHeight() - 50; // Reset Y-coordinate for the new page
         }
     }
