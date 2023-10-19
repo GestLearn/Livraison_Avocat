@@ -60,13 +60,6 @@ if (!isset($_SESSION["user_id"])) {
             </ul>
         </div>
     </nav>
-
-    <div class="container">
-        <form action="UpdateBDD.php" method="POST" enctype="multipart/form-data">
-            <input type="file" name="excel_file" accept=".xlsx, .xls">
-            <input type="submit" value="Upload and Process Excel File">
-        </form>
-    </div>
     <!-- <div style="text-align: center; margin-bottom: 20px;">
         <h1>Data from Database</h1>
     </div> -->
