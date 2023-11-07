@@ -1,21 +1,11 @@
 <?php
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
-    require './controllers/config.php'; 
+session_start();
 
-    session_start();
-
-    // Check if the user session is not set, and if not, redirect to the login page
-    if (!isset($_SESSION["user_id"])) {
-        header("Location: /views/login.php");
-        exit; // Terminate the script to prevent further execution
-    }
-
-    $userId = $_SESSION["user_id"];
-    $userRole = $_SESSION["role"];
-    $cityIds = unserialize($_SESSION["city_ids"]);
-    
- 
+// Check if the user session is not set, and if not, redirect to the login page
+if (!isset($_SESSION["user_id"])) {
+    header("Location: login.php");
+    exit; // Terminate the script to prevent further execution
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -23,7 +13,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home</title>
+  <title>Dashboard</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
   <script src="https://unpkg.com/pdf-lib@1.4.0/dist/pdf-lib.js"></script>
@@ -64,35 +54,36 @@
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
-
-                <?php if ($userRole === "admin") { ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/controllers/UpdateBDD.php"> Update BDD </a>
-                    </li>
-                <?php } ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="/controllers/logout.php">Logout</a>
+                    <a class="nav-link" href="logout.php">Logout</a>
                 </li>
-
             </ul>
-            
         </div>
     </nav>
-    
-
-        
-    
     <!-- <div style="text-align: center; margin-bottom: 20px;">
         <h1>Data from Database</h1>
     </div> -->
 
     <?php
     
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "new-liv-v1";
+
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    } 
+    // else {
+    //     // echo '<p>Connexion au serveur MySQL établie avec succès.</p>';
+    // }
 
     // Function to get the status for a specific ID
     function getStatusOption($id) {
         global $conn;
-        $sql = "SELECT * FROM status WHERE pkg_info_id = $id";
+        $sql = "SELECT * FROM status WHERE basic_info_id = $id";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
@@ -104,7 +95,8 @@
     }
 
     // Assuming you have retrieved the user's role and associated city IDs in the session
-    
+    $userRole = $_SESSION["role"];
+    $associatedCityIds = $_SESSION["city_ids"];
     //   var_dump($_SESSION["user_id"]);
     //   die();
     $sql = "SELECT bi.id, bi.project_name, d.firstname AS destFirstName, d.lastname AS destLastName, d.address AS destAddress, d.old_address AS oldAddress, 
@@ -119,34 +111,23 @@
     if ($userRole === "admin") {
         // Admin can see all packages, no need for additional filtering
     } elseif ($userRole === "manager") {
-        
-        // var_dump($cityIds);
+        // var_dump($userRole);
         // die();
         // Manager should only see packages associated with their cities
-        $sql .= " WHERE bi.id_city IN (" . implode(",", $cityIds) . ")";
+        $sql .= " WHERE bi.id_city IN (" . implode(",", $associatedCityIds) . ")";
         $sql .= " AND bi.id_manager = " . $userId;
     } elseif ($userRole === "deliverer") {
         // var_dump($userRole);
         // die();
         // Deliverer should only see packages they are assigned to
-        // $userId = $_SESSION["user_id"];
+        $userId = $_SESSION["user_id"];
         $sql .= " WHERE bi.id_deliverer = $userId";
     }
-    // var_dump($userRole);
-    // var_dump($userId);
-    // die();
-    try {
-        // Attempt to execute the SQL query
-        $result = $conn->query($sql);
-    } catch (Exception $e) {
-        // Handle the exception (error)
-        echo "An error occurred while executing the SQL query: " . $e->getMessage();
-    }
-    
-    if ($result !== false) {
-        // SQL query executed successfully
-        if ($result->num_rows > 0) {
-            ?>
+
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        ?>
         <div class="table-container">
         <table class="table table-striped table-smaller table-sm mt-4" id="table">
             <thead>
@@ -173,50 +154,45 @@
             </thead>
             <tbody>
             <?php
-                while ($row = $result->fetch_assoc()) {
-                    ?>
-                    <tr>
-                        <td><?php echo $row["id"]; ?></td>
-                        <td><?php echo $row["project_name"]; ?></td>
-                        <td><?php echo $row["destFirstName"]; ?></td>
-                        <td><?php echo $row["destLastName"]; ?></td>
-                        <td><?php echo $row["destAddress"]; ?></td>
-                        <?php if (!empty($row["oldAddress"])) { ?>
-                        <td><?php echo $row["oldAddress"]; ?></td>
-                        <?php } else { ?>
-                        <td>No old address</td>
-                        <?php } ?>
-                        <td><?php echo $row["destCity"]; ?></td>
-                        <td><?php echo $row["delivererName"]; ?></td>
-                        <td><?php echo $row["managerName"]; ?></td>
-                        <td><?php echo $row["destPhone"]; ?></td>
-                        <td><?php echo $row["destIdNumber"]; ?></td>
-                        <td><?php echo $row["letterType"]; ?></td>
-                        <td><?php
-                                // Check if the status exists for this ID
-                                $statusData = getStatusOption($row["id"]);
-                                if ($statusData) {
-                                    $statusOption = $statusData["statusOption"];
-                                    $whoGotIt = $statusData["whoGotIt"];
-                                    $relationship = $statusData["relationship"];
+            while ($row = $result->fetch_assoc()) {
+                ?>
+                <tr>
+                    <td><?php echo $row["id"]; ?></td>
+                    <td><?php echo $row["project_name"]; ?></td>
+                    <td><?php echo $row["destFirstName"]; ?></td>
+                    <td><?php echo $row["destLastName"]; ?></td>
+                    <td><?php echo $row["destAddress"]; ?></td>
+                    <?php if (!empty($row["oldAddress"])) { ?>
+                    <td><?php echo $row["oldAddress"]; ?></td>
+                    <?php } else { ?>
+                    <td>No old address</td>
+                    <?php } ?>
+                    <td><?php echo $row["destCity"]; ?></td>
+                    <td><?php echo $row["delivererName"]; ?></td>
+                    <td><?php echo $row["managerName"]; ?></td>
+                    <td><?php echo $row["destPhone"]; ?></td>
+                    <td><?php echo $row["destIdNumber"]; ?></td>
+                    <td><?php echo $row["letterType"]; ?></td>
+                    <td>
+                        <?php
+                            // Check if the status exists for this ID
+                            $statusData = getStatusOption($row["id"]);
+                            if ($statusData) {
+                                $statusOption = $statusData["statusOption"];
+                                $whoGotIt = $statusData["whoGotIt"];
+                                $relationship = $statusData["relationship"];
 
-                                    if ($statusOption === "Absence") {
-                                        $passages = [];
-                                        $psg1 = $statusData["passage1"];
-                                        $psg2 = $statusData["passage2"];
-                                        $psg3 = $statusData["passage3"];
-                                        
-                                        if ($psg1 && !$psg3) {
-                                            if ($psg2 && !$psg3) {
-                                                echo "<a href='/views/setStatus.php?id=" . $row["id"] . "'>" . "Set Status for the third passage</a>  ";
-                                            } else {
-                                                echo "<a href='/views/setStatus.php?id=" . $row["id"] . "'>" . "Set Status for the second passage</a>  ";
-                                            }
+                                if ($statusOption === "Absence") {
+                                    $passages = [];
+                                    $psg1 = $statusData["passage1"];
+                                    $psg2 = $statusData["passage2"];
+                                    $psg3 = $statusData["passage3"];
+                                    
+                                    if ($psg1 && !$psg3) {
+                                        if ($psg2 && !$psg3) {
+                                            echo "<a href='setStatus.php?id=" . $row["id"] . "'>" . "Set Status for the third passage</a>  ";
                                         } else {
-                                            if ($whoGotIt)
-                                                echo "delivered to a " . $statusOption . " named " . $whoGotIt . " as a " . $relationship;
-                                            else
-                                                echo $statusOption;
+                                            echo "<a href='setStatus.php?id=" . $row["id"] . "'>" . "Set Status for the second passage</a>  ";
                                         }
                                     } else {
                                         if ($whoGotIt)
@@ -225,30 +201,32 @@
                                             echo $statusOption;
                                     }
                                 } else {
-                                    echo "<a href='/views/setStatus.php?id=" . $row["id"] . "'>Set Status here</a>";
+                                    if ($whoGotIt)
+                                        echo "delivered to a " . $statusOption . " named " . $whoGotIt . " as a " . $relationship;
+                                    else
+                                        echo $statusOption;
                                 }
-                            ?>
-                        </td>
-                    <?php if (!empty($row["signature"])) { ?>
-                        <td><?php echo $row["signature"]; ?></td>
-                    <?php } else { ?>
-                        <td><a href='./views/signNew.php?id=<?php echo $row["id"]; ?>'>sign</a></td>
-                    <?php } ?>
-                    <td><button class="download-btn">Download PDF</button></td>
-                    </tr>
-                    <?php
-                }
+                            } else {
+                                echo "<a href='setStatus.php?id=" . $row["id"] . "'>Set Status here</a>";
+                            }
+                        ?>
+                    </td>
+                <?php if (!empty($row["signature"])) { ?>
+                    <td><?php echo $row["signature"]; ?></td>
+                <?php } else { ?>
+                    <td><a href='./signNew.php?id=<?php echo $row["id"]; ?>'>sign</a></td>
+                <?php } ?>
+                <td><button class="download-btn">Download PDF</button></td>
+                </tr>
+                <?php
+            }
             ?>
             </tbody>
         </table>
         </div>
         <?php
-        } else {
-            echo " No data found in the database.";
-        }
     } else {
-        // SQL query execution failed, display an error message
-        echo " An error occurred while executing the SQL query. Please check your query for correctness.";
+        echo "No data found in the database.";
     }
 
     $conn->close();
@@ -257,8 +235,8 @@
         <button id="exportPdf">Export All in pdf</button>
     </div>
 
-    <script src="./public/js/pdfGenerateV2.js" async></script>
-    <script src="./public/js/pdfexportAllV2.js" async></script>
+    <script src="./js/pdfGenerateV2.js" async></script>
+    <script src="./js/pdfexportAllV2.js" async></script>
 
 </body>
 
