@@ -90,7 +90,7 @@ document.getElementById('exportPdf').onclick = async function () {
             console.log("enter if // Load the signature image")
             // Load the signature image
             
-            const res = await fetch('./uploads/signatures/' + signatureFileName);
+            const res = await fetch('./uploads/' + signatureFileName);
             // console.log("res await")
             const imageData = await res.arrayBuffer();
 

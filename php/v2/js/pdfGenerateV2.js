@@ -45,7 +45,7 @@ $(document).ready(function () {
     
         if (signatureFileName && signatureFileName !== "" && validImageExtensions.includes(fileExtension)) {
             // Load the signature image
-            const imageBytes = await fetch('./uploads/signatures/' + signatureFileName).then((res) => res.arrayBuffer());
+            const imageBytes = await fetch('./uploads/' + signatureFileName).then((res) => res.arrayBuffer());
     
             // Embed the image as an XObject
             const image = await pdfDoc.embedPng(imageBytes);

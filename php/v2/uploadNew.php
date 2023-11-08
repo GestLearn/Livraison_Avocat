@@ -1,9 +1,9 @@
 <?php
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "new-liv-v1";
+ $servername = 'db5014599449.hosting-data.io';
+  $dbname = 'dbs12132142';
+  $username = 'dbu5396336';
+  $password = 'Sundus@Pel$67000.';
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   var_dump($record_id);
   $filename = $_POST['filename'];
   $imageBase64 = $_POST['imageBase64'];
-  $path = "uploads/signatures/"; // Specify the folder where you want to save the image
+  $path = "uploads/"; // Specify the folder where you want to save the image
 
   // Check if the folder exists, if not, create it
   if (!file_exists($path)) {
@@ -31,14 +31,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   // Save the image to the folder
   file_put_contents($path . $filename, $imageData);
 
-  $sql = "UPDATE pkg_info SET signature = '$filename' WHERE id = $record_id";
+  $sql = "UPDATE basic_infos SET signature = '$filename' WHERE id = $record_id";
   // You can optionally save the file path or other information in your database
   // ...
 
     if ($conn->query($sql) === TRUE) {
-      echo "Signature Uploaded Successfully.";
+        echo "Signature Uploaded Successfully.";
     } else {
-      echo "Error updating record: " . $conn->error;
+        echo "Error updating record: " . $conn->error;
     }
 
     $conn->close();
