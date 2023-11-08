@@ -1,16 +1,30 @@
 <?php
-session_start();
+require '../controllers/config.php'; 
+// Handle form submission to change the password
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $user_email = $_POST["email"];
+    $new_password = password_hash($_POST["new_password"], PASSWORD_BCRYPT);
 
-if (isset($_SESSION["username"])) {
-    // If the session is already set, redirect the user to the home page
-    header("Location: home.php");
-    exit;
+    // Validate and update the user's password in your database
+    $updatePasswordQuery = "UPDATE User SET password = ? WHERE email = ?";
+    $stmt = $conn->prepare($updatePasswordQuery);
+    $stmt->bind_param("ss", $new_password, $user_email);
+
+    if ($stmt->execute()) {
+        // Password updated successfully
+        header("Location: /views/login.php"); // Redirect to the login page
+        exit;
+    } else {
+        // Password update failed
+        echo "Password update failed. Please try again.";
+    }
 }
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -53,25 +67,12 @@ if (isset($_SESSION["username"])) {
     </style>
 </head>
 <body>
-    <h2>Login</h2>
-    <form method="post" action="/controllers/login_process.php">
-        <input type="email" name="email" placeholder="Email" required> <!-- Email input -->
-        <input type="password" name="password" placeholder="Password" required>
-        <button type="submit">Login</button>
-        <?php
-        if (isset($_GET["error"])) {
-            $error = $_GET["error"];
-            if ($error == 1) {
-                $errorMessage = "Incorrect password. Please try again.";
-            } elseif ($error == 2) {
-                $errorMessage = "User not found. Please check your email."; // Update the error message
-            }
-            // Display $errorMessage in your login form
-        }
-        ?>
-        <p class="error"> <?php echo $errorMessage; ?></p>
-        
+    <h2>Change Password</h2>
+    <form method="post" action="">
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="new_password" placeholder="New Password" required>
+        <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+        <button type="submit">Change Password</button>
     </form>
-    <h2>Forgot your password? <a href="/views/forgot_password.php">Reset it here</a></h2> <!-- Add Forgot Password link -->
 </body>
 </html>
