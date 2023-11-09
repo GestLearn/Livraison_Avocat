@@ -15,28 +15,10 @@
 			<button type="submit" name="import">Import</button>
 		</form>
 		<hr>
-		<!-- <table border = 1>
-			<tr>
-				<td>#</td>
-				<td>Name</td>
-				<td>Age</td>
-				<td>Country</td>
-			</tr>
-			<?php
-			$i = 1;
-			$rows = mysqli_query($conn, "SELECT * FROM tb_data");
-			foreach($rows as $row) :
-			?>
-			<tr>
-				<td> <?php echo $i++; ?> </td>
-				<td> <?php echo $row["name"]; ?> </td>
-				<td> <?php echo $row["age"]; ?> </td>
-				<td> <?php echo $row["country"]; ?> </td>
-			</tr>
-			<?php endforeach; ?>
-		</table> -->
+
 		<?php
 		if(isset($_POST["import"])){
+			echo("enter1");
 			$fileName = $_FILES["excel"]["name"];
 			$fileExtension = explode('.', $fileName);
             $fileExtension = strtolower(end($fileExtension));
@@ -259,14 +241,13 @@
                 echo '<br>';
                 echo "The ID of the manager is: $managerID";
                 echo '<br>';
-                echo
+				echo
                 "
                 <script>
                       alert('Succesfully Imported');
                       document.location.href = '/home.php';
                 </script>
                 ";
-
 
 
                 /*INSERT INTO `pkg_info` (`id`, `project_name`, `id_city`, `id_manager`, `id_deliverer`, `signature`, `id_dest`) VALUES
@@ -280,13 +261,7 @@
 				// mysqli_query($conn, "INSERT INTO tb_data VALUES('', '$name', '$age', '$country')");
         }
 
-		// 	echo
-		// 	"
-		// 	<script>
-        //         // alert('Succesfully Imported');
-        //         // document.location.href = '';
-		// 	</script>
-		// 	";
+		 	
 		// }/
         // header("Location: /home.php");
 		?>

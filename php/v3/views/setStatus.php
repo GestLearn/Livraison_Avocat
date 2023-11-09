@@ -30,7 +30,7 @@
 
     // Check if the ID parameter is set in the URL
     if (isset($_GET['id'])) {
-        $pkg_id = $_GET['id'];
+        $basic_info_id = $_GET['id'];
     } else {
         // Handle the case where the ID is not provided.
         echo "Invalid request: ID parameter not provided.";
@@ -38,13 +38,13 @@
     }
     
 
-    function getStatusData($pkg_id) {
+    function getStatusData($basic_info_id) {
         global $conn;
-        $sql = "SELECT * FROM status WHERE pkg_info_id = $pkg_id";
+        $sql = "SELECT * FROM status WHERE pkg_info_id = $basic_info_id";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
-            // Fetch the data (assuming you have only one row per pkg_id)
+            // Fetch the data (assuming you have only one row per basic_info_id)
             $row = $result->fetch_assoc();
             return $row; // Return the status data as an associative array
         } else {
@@ -52,7 +52,7 @@
         }
     }
 
-    $statusData = getStatusData($pkg_id);
+    $statusData = getStatusData($basic_info_id);
 
     if ($statusData) {
         $statusOption = $statusData["statusOption"];
@@ -70,7 +70,7 @@
         <?php
             // Check if the ID parameter is set in the URL
             if (isset($_GET['id'])) {
-                $pkg_id = $_GET['id'];
+                $basic_info_id = $_GET['id'];
             } else {
                 // Handle the case where the ID is not provided.
                 echo "Invalid request: ID parameter not provided.";
@@ -145,9 +145,9 @@
 
 
 
-            <div class="form-group"  style="display: ;">
+            <div class="form-group"  style="display: none;">
                 <label for="id">ID:</label>
-                <input type="text" class="form-control" id="pkg_id" name="pkg_id" value="<?php echo $pkg_id; ?>" readonly>
+                <input type="text" class="form-control" id="basic_info_id" name="basic_info_id" value="<?php echo $basic_info_id; ?>" readonly>
             </div>
         
             

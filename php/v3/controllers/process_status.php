@@ -11,7 +11,7 @@ $passage1 = isset($_POST['passage1']) ? 1 : 0;
 $passage2 = isset($_POST['passage2']) ? 1 : 0;
 $passage3 = isset($_POST['passage3']) ? 1 : 0;
 
-$pkg_id = intval($_POST['pkg_id']);
+$basic_info_id = intval($_POST['basic_info_id']);
 
 $uploadedFiles = $_FILES['photos'];
 
@@ -52,12 +52,12 @@ if ($fileCount > 0) {
     }
 }
 
-// Check if a row with the same pkg_id already exists
-$sql_check = "SELECT pkg_info_id FROM status WHERE pkg_info_id = $pkg_id";
+// Check if a row with the same basic_info_id already exists
+$sql_check = "SELECT pkg_info_id FROM status WHERE pkg_info_id = $basic_info_id";
 $result_check = $conn->query($sql_check);
 
 if ($result_check->num_rows > 0) {
-    // A row with the same pkg_id exists, so update the existing row
+    // A row with the same basic_info_id exists, so update the existing row
     $sql = "UPDATE status
         SET statusOption = '$statusOption',
             whoGotIt = '$whoGotIt',
@@ -68,23 +68,17 @@ if ($result_check->num_rows > 0) {
             photoImmo = '$photoImmoName',
             photoPkg = '$photoPkgName'
             
-        WHERE pkg_info_id = $pkg_id";
+        WHERE pkg_info_id = $basic_info_id";
 } else {
-    // No row with the same pkg_id found, so insert a new row
+    // No row with the same basic_info_id found, so insert a new row
     $sql = "INSERT INTO status (pkg_info_id, statusOption, whoGotIt, relationship, passage1, passage2, passage3, photoImmo, photoPkg)
-            VALUES ($pkg_id, '$statusOption', '$whoGotIt', '$relationship', $passage1, $passage2, $passage3,'$photoImmoName', '$photoPkgName')";
+            VALUES ($basic_info_id, '$statusOption', '$whoGotIt', '$relationship', $passage1, $passage2, $passage3,'$photoImmoName', '$photoPkgName')";
 }
 
 // Perform the SQL query
 if (mysqli_query($conn, $sql)) {
     echo "Data updated/inserted successfully!";
-    // header('Location: /home.php');
-    echo
-        "
-        <script>
-            document.location.href = '/home.php';
-        </script>
-        ";
+    header('Location: /home.php');
 } else {
     echo "Error: " . $sql . "<br>" . mysqli_error($conn);
 }
