@@ -34,7 +34,7 @@ document.getElementById('exportPdf').onclick = async function () {
         let lineHeight = fontSize * 1.2; // Line height
         let cellHeight = lineHeight; // Height of the current cell's content
 
-        const lastCell = cells[cells.length - 3]; // Get the last cell
+        const lastCell = cells[cells.length - 4]; // Get the last cell
         const lastItem = lastCell.textContent.trim(); // Get the text content of the last cell
 
         console.log("lastItem: ", lastItem);
@@ -51,7 +51,7 @@ document.getElementById('exportPdf').onclick = async function () {
             lastCell.textContent = 'Not delivered';
         }
 
-        for (var i = 0; i < cells.length - 2; i++) { // Skip the last cell (td or th)
+        for (var i = 0; i < cells.length - 3; i++) { // Skip the last cell (td or th)
             const text = headerContentArray[i] + ' : ' + cells[i].textContent.replace(/\n/g, ''); // Remove newline characters
 
             // Calculate the required height for the current cell's content
@@ -79,7 +79,7 @@ document.getElementById('exportPdf').onclick = async function () {
         }
 
         // Check if the current cell contains the signature file name
-        var signatureFileName = cells[cells.length - 2].textContent.trim(); // Assuming the file name is in the cell
+        var signatureFileName = cells[cells.length - 3].textContent.trim(); // Assuming the file name is in the cell
         console.log("signatureFileName:", signatureFileName)
          var validImageExtensions = ["jpg", "jpeg", "png", "gif"]; // Add more extensions if needed
         var fileExtension = signatureFileName.split('.').pop().toLowerCase();

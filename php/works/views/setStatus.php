@@ -42,7 +42,8 @@
         global $conn;
         $sql = "SELECT * FROM status WHERE pkg_info_id = $pkg_id";
         $result = $conn->query($sql);
-
+        var_dump($result);
+        die();
         if ($result->num_rows > 0) {
             // Fetch the data (assuming you have only one row per pkg_id)
             $row = $result->fetch_assoc();
@@ -53,10 +54,12 @@
     }
 
     $statusData = getStatusData($pkg_id);
-
+    var_dump($statusData);
+    die();
     if ($statusData) {
         $statusOption = $statusData["statusOption"];
-
+        var_dump($statusOption);
+        die();
         if ($statusOption === "Absence") {
             $passage1 = $statusData["passage1"];
             $passage2 = $statusData["passage2"];
@@ -85,10 +88,10 @@
             <div class="form-group">
                 <label for="statusOption">Status Option:</label>
                 <select class="form-control" id="statusOption" name="statusOption">
-                <option value="Hand-delivered">Hand-delivered</option>
-                <option value="TrustedPerson">Passed on to a trusted person in the company</option>
-                <option value="FamilyOver18">Passed on to a Family over 18</option>
-                <option value="Absence">Absence</option>
+                    <option value="Hand-delivered">Hand-delivered</option>
+                    <option value="TrustedPerson">Passed on to a trusted person in the company</option>
+                    <option value="FamilyOver18">Passed on to a Family over 18</option>
+                    <option value="Absence">Absence</option>
                 </select>
             </div>
 

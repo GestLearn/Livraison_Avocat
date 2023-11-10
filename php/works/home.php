@@ -111,14 +111,15 @@
                 </li>
                 <li class="nav-item">
                 </li>
-
-                <li class="nav-item">
-                    <span class="navbar-text notification-icon" data-toggle="modal" data-target="#notificationsModal">
-                    &nbsp;
-                        <i class="fas fa-bell"></i>
-                        <span class="badge badge-danger"><?php echo $unreadNotificationCount; ?></span>
-                    </span>
-                </li>
+                <?php if ($userRole === "admin") { ?>
+                    <li class="nav-item">
+                        <span class="navbar-text notification-icon" data-toggle="modal" data-target="#notificationsModal">
+                        &nbsp;
+                            <i class="fas fa-bell"></i>
+                            <span class="badge badge-danger"><?php echo $unreadNotificationCount; ?></span>
+                        </span>
+                    </li>
+                <?php } ?>
             </ul>
             <ul class="navbar-nav ml-auto">
 

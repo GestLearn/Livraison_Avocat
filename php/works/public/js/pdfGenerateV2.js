@@ -37,7 +37,7 @@ $(document).ready(function () {
         let y = page.getHeight() - 50;
     
         // Check if the signature filename is available (assuming the column name is "signatureFileName")
-        var signatureFileName = rowData[rowData.length - 2]; // Assuming the last column contains the signature filename
+        var signatureFileName = rowData[rowData.length - 3]; // Assuming the last column contains the signature filename
     
         // Check if the signatureFileName is a valid image file (e.g., has an image file extension)
         var validImageExtensions = ["jpg", "jpeg", "png", "gif"]; // Add more extensions if needed
@@ -67,20 +67,20 @@ $(document).ready(function () {
         }
     
         var tableHeaders = table.columns().header().toArray();
-        const lastItem = rowData[rowData.length - 3]; // Get the last item
+        const lastItem = rowData[rowData.length - 4]; // Get the last item
         console.log("lastItem: ",lastItem,"-----includes", lastItem.includes('Set Status for the second passage'))
         // Check the content of the last item and modify it accordingly
         if (lastItem.includes('Set Status for the second passage')) {
             // Set it as Absence Passage 1
-            rowData[rowData.length - 3] = 'Absence Passage 1';
+            rowData[rowData.length - 4] = 'Absence Passage 1';
         } else if (lastItem.includes('Set Status for the third passage')) {
             // Set it as Absence Passage 2
-            rowData[rowData.length - 3] = 'Absence Passage 2';
+            rowData[rowData.length - 4] = 'Absence Passage 2';
         } else if(lastItem.includes('Set Status here')){
-            rowData[rowData.length - 3] = 'Not delivered';
+            rowData[rowData.length - 4] = 'Not delivered';
         }
         // Combine table headers and table data before creating the PDF content
-        for (var i = 0; i < rowData.length - 2; i++) {
+        for (var i = 0; i < rowData.length - 3; i++) {
             const text = tableHeaders[i].textContent + ': ' + rowData[i];
             
             // Add space between content elements
