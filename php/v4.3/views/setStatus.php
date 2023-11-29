@@ -1,7 +1,7 @@
 <?php
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
-    require '../controllers/config.php'; 
+    
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +27,7 @@
     
     <?php
 
-
+require '../controllers/config.php'; 
     // Check if the ID parameter is set in the URL
     if (isset($_GET['id'])) {
         $pkg_id = $_GET['id'];
@@ -37,16 +37,16 @@
         exit;
     }
     
-
+    $passage1;$passage2;$passage3;
     function getStatusData($pkg_id) {
         global $conn;
         $sql = "SELECT * FROM status WHERE pkg_info_id = $pkg_id";
         $result = $conn->query($sql);
-        var_dump($result);
-        // die();
+        //var_dump( $result->num_rows);
         if ($result->num_rows > 0) {
             // Fetch the data (assuming you have only one row per pkg_id)
             $row = $result->fetch_assoc();
+            //var_dump($result->num_rows);
             return $row; // Return the status data as an associative array
         } else {
             return null; // Status data not found
@@ -54,17 +54,21 @@
     }
 
     $statusData = getStatusData($pkg_id);
-    var_dump($statusData);
-    die();
+    //var_dump($conn);
     if ($statusData) {
+        
         $statusOption = $statusData["statusOption"];
-        var_dump($statusOption);
-        die();
+
         if ($statusOption === "Absence") {
+           // var_dump($statusData["statusOption"]);
             $passage1 = $statusData["passage1"];
             $passage2 = $statusData["passage2"];
             $passage3 = $statusData["passage3"];
         }
+    }else{
+        $passage1 = false;
+        $passage2 = false;
+        $passage3 = false;
     }
     ?>
     
@@ -88,10 +92,10 @@
             <div class="form-group">
                 <label for="statusOption">Status Option:</label>
                 <select class="form-control" id="statusOption" name="statusOption">
-                    <option value="Hand-delivered">Hand-delivered</option>
-                    <option value="TrustedPerson">Passed on to a trusted person in the company</option>
-                    <option value="FamilyOver18">Passed on to a Family over 18</option>
-                    <option value="Absence">Absence</option>
+                <option value="Hand-delivered">Hand-delivered</option>
+                <option value="TrustedPerson">Passed on to a trusted person in the company</option>
+                <option value="FamilyOver18">Passed on to a Family over 18</option>
+                <option value="Absence">Absence</option>
                 </select>
             </div>
 
