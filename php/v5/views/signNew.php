@@ -40,7 +40,6 @@
     <?php 
       // :require '../controllers/config.php';
       require './navbar.php';
-    
     ?>
     <div id="signature" style="border: 1px solid black;" class="parent"></div>
 
@@ -65,8 +64,6 @@
         var data = signature.jSignature('getData', 'image');
         $('#signaturePreview').attr('src', "data:" + data);
       });
-
-
       
       $('#download').click(function () {
         // Get the jSignature data
@@ -104,12 +101,7 @@
             window.location.href = "/home.php";
           }
         });
-
-        
-      });
-
-
-    
+      });    
     </script>
   </body>
 </html>

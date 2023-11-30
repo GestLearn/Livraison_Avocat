@@ -1,10 +1,45 @@
+<?php
+    require '../controllers/config.php'; 
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    session_start();
+    if (!isset($_SESSION["user_id"])) {
+        header("Location: /views/login.php");
+        exit; // Terminate the script to prevent further execution
+    }
+?>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Livraison</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    
+    <!-- costumised css -->
+    <link rel="stylesheet" href="../public/css/style.css">
+
+
+    <script src="https://unpkg.com/pdf-lib@1.4.0/dist/pdf-lib.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8"
+    src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+
 
 <?php
- error_reporting(E_ALL);
- ini_set('display_errors', 1);
- require '../controllers/config.php'; 
-
-// ... (your existing code)
+//  error_reporting(E_ALL);
+//  ini_set('display_errors', 1);
+//  require '../controllers/config.php'; 
+  require './navbar.php';
 
 // Query unread notifications for the current admin user
 $sqlNotifications = "SELECT * FROM notifications";
@@ -13,53 +48,7 @@ $resultNotifications = $conn->query($sqlNotifications);
 // Display the notifications
 if ($resultNotifications !== false && $resultNotifications->num_rows > 0) {
     ?>
-   <style>
-    .notification-container {
-        border: 1px solid #ddd;
-        padding: 10px;
-        margin-top: 20px;
-        background-color: #f9f9f9;
-    }
 
-    .notification-container h3 {
-        color: #333;
-    }
-
-    .notification-list {
-        list-style-type: none;
-        padding: 0;
-    }
-
-    .notification-item {
-        margin-bottom: 10px;
-        padding: 10px;
-        border: 1px solid #ddd;
-        cursor: pointer;
-    }
-
-    .notification-status-0 {
-        background-color: #ffe6e6; /* Light red background for status 0 */
-    }
-
-    .notification-status-1 {
-        background-color: #e6f7e6; /* Light green background for status 1 */
-    }
-
-    .notification-item a {
-        text-decoration: none;
-        color: inherit; /* Inherit the color from the parent */
-        display: block; /* Make the link fill the entire notification item */
-    }
-
-    .mark_as_read {
-        color: #4CAF50; /* Green color for the "mark as read" link */
-        font-weight: bold; /* Make the text bold */
-        margin-top: 5px; /* Add some space between the notification text and the link */
-        display: inline-block; /* Display the link inline with the text */
-    }
-</style>
-
-<!-- Your existing HTML code -->
 
 
 <div class="notification-container">
@@ -99,3 +88,6 @@ if ($resultNotifications !== false && $resultNotifications->num_rows > 0) {
 $conn->close();
 // ... (continue with the rest of your existing code)
 ?>
+</body>
+
+</html>

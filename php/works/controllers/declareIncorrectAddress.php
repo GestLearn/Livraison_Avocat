@@ -10,6 +10,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Get the package ID from the AJAX request
         $packageId = $_POST['packageId'];
         $address = $_POST['address'];
+        //$declared = true;
+        
         // Insert a notification into the database
         $sql = "INSERT INTO notifications (package_id, address, timestamp, read_status) VALUES ($packageId, '$address', NOW(), 0)";
         if ($conn->query($sql) === TRUE) {

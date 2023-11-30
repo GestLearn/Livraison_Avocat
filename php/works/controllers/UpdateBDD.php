@@ -1,40 +1,48 @@
 <?php
+    require 'config.php'; 
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
-    require 'config.php'; 
+    session_start();
+    if (!isset($_SESSION["user_id"])) {
+        header("Location: /views/login.php");
+        exit; // Terminate the script to prevent further execution
+    }
 ?>
- <!DOCTYPE html>
+
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
 	<head> 
-		<meta charset="utf-8">
-		<title>Import Excel To MySQL</title>
+		
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Import Excel To MySQL</title>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+        
+        <!-- costumised css -->
+        <link rel="stylesheet" href="../public/css/style.css">
+        <script src="https://unpkg.com/pdf-lib@1.4.0/dist/pdf-lib.js"></script>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+        <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 	</head>
 	<body>
+    <?php
+        //require './config.php';
+        require '../views/navbar.php';
+    ?>
 		<form class="" action="" method="post" enctype="multipart/form-data">
 			<input type="file" name="excel" required value="">
 			<button type="submit" name="import">Import</button>
 		</form>
-		<hr>
-		<!-- <table border = 1>
-			<tr>
-				<td>#</td>
-				<td>Name</td>
-				<td>Age</td>
-				<td>Country</td>
-			</tr>
-			<?php
-			$i = 1;
-			$rows = mysqli_query($conn, "SELECT * FROM tb_data");
-			foreach($rows as $row) :
-			?>
-			<tr>
-				<td> <?php echo $i++; ?> </td>
-				<td> <?php echo $row["name"]; ?> </td>
-				<td> <?php echo $row["age"]; ?> </td>
-				<td> <?php echo $row["country"]; ?> </td>
-			</tr>
-			<?php endforeach; ?>
-		</table> -->
+		
+		
 		<?php
 		if(isset($_POST["import"])){
 			$fileName = $_FILES["excel"]["name"];
@@ -267,37 +275,12 @@
                 </script>
                 ";
 
-
-
-                /*INSERT INTO `pkg_info` (`id`, `project_name`, `id_city`, `id_manager`, `id_deliverer`, `signature`, `id_dest`) VALUES
-(201201, 'A', 1, 2, 12, 'signature_1696839056685.png', 1),*/
-                
-                
             }   
-				// $name = $row[0]; INSERT INTO `usercity` (`user_id`, `city_id`) VALUES (9, 1)
-				// $age = $row[1];
-				// $country = $row[2];
-				// mysqli_query($conn, "INSERT INTO tb_data VALUES('', '$name', '$age', '$country')");
+				
         }
 
-		// 	echo
-		// 	"
-		// 	<script>
-        //         // alert('Succesfully Imported');
-        //         // document.location.href = '';
-		// 	</script>
-		// 	";
-		// }/
-        // header("Location: /home.php");
 		?>
 	</body>
 </html>
 
 <?php
-// if (class_exists('ZipArchive')) {
-//     echo "ZipArchive is enabled.";
-// } else {
-//     echo "ZipArchive is not enabled.";
-// }
-
-// phpinfo();

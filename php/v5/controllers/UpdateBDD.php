@@ -275,37 +275,12 @@
                 </script>
                 ";
 
-
-
-                /*INSERT INTO `pkg_info` (`id`, `project_name`, `id_city`, `id_manager`, `id_deliverer`, `signature`, `id_dest`) VALUES
-(201201, 'A', 1, 2, 12, 'signature_1696839056685.png', 1),*/
-                
-                
             }   
-				// $name = $row[0]; INSERT INTO `usercity` (`user_id`, `city_id`) VALUES (9, 1)
-				// $age = $row[1];
-				// $country = $row[2];
-				// mysqli_query($conn, "INSERT INTO tb_data VALUES('', '$name', '$age', '$country')");
+				
         }
 
-		// 	echo
-		// 	"
-		// 	<script>
-        //         // alert('Succesfully Imported');
-        //         // document.location.href = '';
-		// 	</script>
-		// 	";
-		// }/
-        // header("Location: /home.php");
 		?>
 	</body>
 </html>
 
 <?php
-// if (class_exists('ZipArchive')) {
-//     echo "ZipArchive is enabled.";
-// } else {
-//     echo "ZipArchive is not enabled.";
-// }
-
-// phpinfo();

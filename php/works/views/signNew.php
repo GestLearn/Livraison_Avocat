@@ -1,25 +1,47 @@
+<?php
+    require '../controllers/config.php';
+
+    session_start();
+    if (!isset($_SESSION["user_id"])) {
+        header("Location: /views/login.php");
+        exit; // Terminate the script to prevent further execution
+    }
+?>
+
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
     <title>Draw & Download Signature</title>
-    <script src="/public/js/jSignature-main/jquery.js"></script>
+    <!-- costumised css -->
+    <link rel="stylesheet" href="../public/style.css">
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/public/js/jSignature-main/jSignature.min.js"></script>
     <script src="/public/js/jSignature-main/modernizr.js"></script>
 
-    <style>
-      .jSignature {
-        margin: 0px;
-        padding: 0px;
-        border: medium;
-        height: 600px !important;
-        width: 100%;
-        touch-action: none;
-        background-color: rgb(255, 255, 255);
-      }
-    </style>
+    <script src="https://unpkg.com/pdf-lib@1.4.0/dist/pdf-lib.js"></script>
+
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8"
+    src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  
   </head>
   <body>
+    <?php 
+      // :require '../controllers/config.php';
+      require './navbar.php';
+    
+    ?>
     <div id="signature" style="border: 1px solid black;" class="parent"></div>
 
     <button type="button" id="preview">Preview</button>
@@ -43,8 +65,6 @@
         var data = signature.jSignature('getData', 'image');
         $('#signaturePreview').attr('src', "data:" + data);
       });
-
-
       
       $('#download').click(function () {
         // Get the jSignature data
@@ -82,12 +102,7 @@
             window.location.href = "/home.php";
           }
         });
-
-        
-      });
-
-
-    
+      });    
     </script>
   </body>
 </html>
