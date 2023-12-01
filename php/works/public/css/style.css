@@ -111,10 +111,22 @@ button {
     background-color: #007BFF;
     color: white;
     border: none;
+    margin-top: 20px;
 }
 button:hover {
     background-color: #0056b3;
 }
+
+form {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+label {
+    margin-top: 10px;
+}
+
+
 .error {
     color: #ff0000; /* Red text color for errors */
     font-weight: bold; /* Make the text bold */

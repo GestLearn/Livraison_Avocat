@@ -1,3 +1,4 @@
+
 <?php
     require '../controllers/config.php'; 
     error_reporting(E_ALL);
@@ -51,31 +52,43 @@
 <div class="notification-container">
     <h3>All Notifications</h3>
     <ul class="notification-list">
+    <?php while ($notification = $resultNotifications->fetch_assoc()): ?>
         <?php
-        while ($notification = $resultNotifications->fetch_assoc()) {
-            $statusClass = ($notification['read_status'] == 0) ? 'notification-status-0' : 'notification-status-1';
-            $packageId = $notification['package_id'];
-            
-            // Check if the status is 0, then add a link
-            $notificationItem = "<li class='notification-item $statusClass'>
-                                    Package ID: {$notification['package_id']}, 
-                                    Address: {$notification['address']}, 
-                                    Time: {$notification['timestamp']}";
-            
-            if ($notification['read_status'] == 0) {
-                $notificationItem .= "<br> <br><a class='mark_as_read' href='/controllers/set-notification-status.php?package_id={$packageId}&status=1'>
-                                        Mark as Read
-                                      </a>";
-            }
-            
-            $notificationItem .= "</li>";
-            
-            echo $notificationItem;
-        }
-        ?>
-    </ul>
-</div>
+        $statusClass = ($notification['read_status'] == 0) ? 'notification-status-0' : 'notification-status-1';
+        $packageId = $notification['package_id'];
 
+        // Check if the status is 0, then add a link
+        ?>
+
+
+<!-- Inside the while loop where notifications are displayed -->
+<li class='notification-item <?php echo $statusClass; ?>'>
+    Package ID: <?php echo $notification['package_id']; ?>,
+    Address: <?php echo $notification['address']; ?>,
+    Time: <?php echo $notification['timestamp']; ?>
+
+    <?php if ($notification['read_status'] == 0): ?>
+        <br><br>
+        <a class='mark_as_read' href='/controllers/set-notification-status.php?package_id=<?php echo $packageId; ?>&status=1'>
+            Mark as Read
+        </a>
+
+        <!-- Add a button to update the address -->
+        <br>
+        
+    <?php endif; ?>
+
+        <a class='update_address' href='/views/update-address.php?package_id=<?php echo $packageId; ?>'>
+            Update Address
+        </a>
+</li>
+
+
+
+
+    <?php endwhile; ?>
+</ul>
+</div>
 
 
     <?php

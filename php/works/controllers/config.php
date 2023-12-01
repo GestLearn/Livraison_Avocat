@@ -1,9 +1,9 @@
 <?php
 
- 	$servername = 'db5014599449.hosting-data.io';
-    $dbname = 'dbs12132142';
-    $dbusername = 'dbu5396336';
-    $dbpassword = 'Sundus@Pel$67000.';
+ 	$servername = 'localhost';
+    $dbname = 'new-liv-v1';
+    $dbusername = 'root';
+    $dbpassword = '';
     // Create a database connection
     $conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
 

@@ -43,7 +43,7 @@
 
                 <?php if ($userRole === "admin") { ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="/views/notifications.php"> all notifications </a>
+                        <a class="nav-link" href="/views/notifications2.php"> all notifications </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/controllers/UpdateBDD.php"> Update BDD </a>
